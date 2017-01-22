@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>My flashy document</title>
+    <style>
+        html ,body {
+            position: relative;
+            height: 100%;
+            width: 100%;
+        }
+        div {
+            height: 4%;
+            width: 4%;
+            float: left;
+        }
+    </style>
+</head>
+<body>
+
+<Script>
+    create_divs(625);
+    flash_colors(100);
+    function create_divs(n) {
+        var div;
+        for (var i=0;i<n;i++) {
+            div = document.createElement("div");
+            div.id=i;
+            document.body.appendChild(div);
+        }
+    }
+    
+    function flash_colors(time_int) {
+        var i, divs = document.getElementsByTagName("div");
+        
+        
+            setInterval(function () {
+                for (i=0;i<divs.length;i++) {
+                    divs[i].style.backgroundColor = "#"+((1<<24)*Math.random()|0).toString(16)
+;
+                }
+            }, time_int);
+        }
+    
+    </Script>
+
+</body>
+</html>
