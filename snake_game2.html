@@ -1,0 +1,213 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Snake Game</title>
+
+    <style>
+        html,
+        body {
+            height: 100%;
+            width: 100%;
+            padding: 0px;
+            margin: 0px;
+            overflow: hidden;
+            background-color: dimgray;
+            font-family: fantasy;
+        }
+        
+        .border {
+            position: relative;
+            height: 600px;
+            width: 600px;
+            border-width: thick;
+            border-color: green;
+            border-style: groove;
+            background-color: beige;
+            padding: 0px;
+            margin: 0px;
+            background-color: darkgray;
+        }
+        
+        .blocks {
+            position: relative;
+            float: left;
+            height: 10px;
+            width: 10px;
+            background-color: darkgray;
+        }
+        
+        .activated {
+            position: relative;
+            float: left;
+            height: 10px;
+            width: 10px;
+            background-color: red;
+        }
+        
+        .target {
+            position: relative;
+            float: left;
+            height: 10px;
+            width: 10px;
+
+            background-color: darkblue;
+        }
+        
+        h3, h4 {
+            padding: 0px;
+            margin: 0px;
+            color: greenyellow;
+        }
+        
+        .gameover {
+            color: maroon;
+        }
+    </style>
+
+</head>
+
+<body>
+    <center>
+        <h3> Mouse Game. It's just like snake. Use the keyboard to move the red mouse.<br>
+        </h3> 
+        <h4>Don't hold the keys down</h4>
+        <div class="border" id="border"></div>
+    </center>
+    <script>
+        create_board();
+        start_game();
+
+        function create_board() {
+            var ele;
+            for (var i = 1; i < 3601; i++) {
+                ele = document.createElement("div");
+                ele.className = "blocks";
+                ele.id = i;
+                document.getElementById("border").appendChild(ele);
+            }
+        };
+
+
+
+        function start_game() {
+
+            var snake = {
+                length: 3,
+                pos_arr: [Math.floor(Math.random() * 3600) + 1]
+            };
+
+
+            for (var i = 0; i < snake.pos_arr.length; i++) {
+                document.getElementById(snake.pos_arr[i]).className = "activated";
+            }
+
+
+            create_target(snake);
+            var clearId;
+
+            document.onkeydown = function (e) {
+                    
+                clearInterval(clearId);
+                clearId=setInterval(
+                function () {snake = move_snake(snake, e.keyCode);}, 100)
+
+
+            };
+
+
+            function move_snake(snake, eve) {
+
+                var pos_ref, s_length = snake.length;
+                var s_arr = snake.pos_arr,
+                    bp = s_arr[s_arr.length - 1];
+                switch (eve) {
+                case 37: // left
+                    pos_ref = -1;
+                    break;
+                case 38: // up
+                    pos_ref = -60;
+                    break;
+                case 39: // right
+                    pos_ref = 1;
+                    break;
+                case 40: // down
+                    pos_ref = 60;
+                    break;
+                };
+
+                var np = s_arr[s_arr.length - 1] + pos_ref;
+
+
+                if ((bp % 60 == 0) && (pos_ref == (1))) {
+                    np = bp - 59;
+                } else if (((bp - 1) % 60 == 0) && (pos_ref == -1)) {
+                    np = bp + 59;
+                } else if ((bp < 61) && (pos_ref == -60)) {
+                    np = 3600 + np;
+
+                } else if ((bp > 3540) && (pos_ref == 60)) {
+                    np = np - 3600;
+                };
+
+
+
+                if (s_arr.includes(np)) {
+                    end_game();
+                }
+
+                if (np == document.getElementsByClassName("target")[0].id) {
+
+                    create_target({
+                    length: s_length,
+                    pos_arr: s_arr
+                });
+                    s_length++;
+                    s_arr.push(np);
+
+                }
+
+                document.getElementById(s_arr[0]).className = "blocks";
+
+                s_arr.push(np);
+                s_arr.splice(0, 1);
+
+
+                for (var i = 0; i < s_arr.length; i++) {
+                    document.getElementById(s_arr[i]).className = "activated";
+                }
+
+
+
+
+
+                return {
+                    length: s_length,
+                    pos_arr: s_arr
+                };
+
+            };
+            
+            function end_game() {
+                document.getElementById("border").innerHTML = "<h3 class='gameover'>Game Over!</h3>";
+            }
+
+            function create_target(snake) {
+                var tp = Math.floor(Math.random() * 3600) + 1;
+
+                while (snake.pos_arr.includes(tp)) {
+                    tp = Math.floor(Math.random() * 3600) + 1;
+                };
+
+                document.getElementById(tp).className = "target";
+
+            };
+
+        };
+        
+    </script>
+
+</body>
+
+</html>
