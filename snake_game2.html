@@ -51,11 +51,11 @@
             float: left;
             height: 10px;
             width: 10px;
-
             background-color: darkblue;
         }
         
-        h3, h4 {
+        h3,
+        h4 {
             padding: 0px;
             margin: 0px;
             color: greenyellow;
@@ -71,8 +71,8 @@
 <body>
     <center>
         <h3> Mouse Game. It's just like snake. Use the keyboard to move the red mouse.<br>
-        </h3> 
-        <h4>Don't hold the keys down</h4>
+        </h3>
+        <h4>Don't hold the keys down (there's a bug)</h4>
         <div class="border" id="border"></div>
     </center>
     <script>
@@ -107,11 +107,38 @@
             create_target(snake);
             var clearId;
 
+            var move_ret = snake;
+
+            var es = {};
+            es.keyCode = 37;
+
             document.onkeydown = function (e) {
+
+                if ((e.keyCode == 37) || (e.keyCode == 38) || (e.keyCode == 39) || (e.keyCode == 40)) {
+
+                    clearInterval(clearId);
                     
-                clearInterval(clearId);
-                clearId=setInterval(
-                function () {snake = move_snake(snake, e.keyCode);}, 100)
+
+                    es.keyCode = e.keyCode;
+                    clearId = setInterval(
+                        function () {
+                            if ((typeof move_ret) == 'function') {
+                                clearInterval(clearId);
+                                end_game();
+                            }
+                            move_ret = move_snake(move_ret, e.keyCode);
+                        }, 30);
+                } else {
+                    clearInterval(clearId);
+                    clearId = setInterval(
+                        function () {
+                            if ((typeof move_ret) == 'function') {
+                                clearInterval(clearId);
+                                end_game();
+                            }
+                            move_ret = move_snake(move_ret, es.keyCode);
+                        }, 40);
+                }
 
 
             };
@@ -154,15 +181,15 @@
 
 
                 if (s_arr.includes(np)) {
-                    end_game();
+                    return end_game;
                 }
 
                 if (np == document.getElementsByClassName("target")[0].id) {
 
                     create_target({
-                    length: s_length,
-                    pos_arr: s_arr
-                });
+                        length: s_length,
+                        pos_arr: s_arr
+                    });
                     s_length++;
                     s_arr.push(np);
 
@@ -188,10 +215,7 @@
                 };
 
             };
-            
-            function end_game() {
-                document.getElementById("border").innerHTML = "<h3 class='gameover'>Game Over!</h3>";
-            }
+
 
             function create_target(snake) {
                 var tp = Math.floor(Math.random() * 3600) + 1;
@@ -202,10 +226,13 @@
 
                 document.getElementById(tp).className = "target";
 
-            };
+            }
 
-        };
-        
+
+            function end_game() {
+                document.getElementById("border").innerHTML = "<h3 class='gameover'>Game Over!</h3>";
+            }
+        }
     </script>
 
 </body>
