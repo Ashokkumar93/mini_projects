@@ -70,7 +70,7 @@
 
 <body>
     <center>
-        <h3> Mouse Game. It's just like snake. Use the keyboard to move the red mouse.<br>
+        <h3> Snake Game. Use the keyboard to move the red mouse.<br>
         </h3>
         <h4>Don't hold the keys down (there's a bug)</h4>
         <div class="border" id="border"></div>
@@ -127,7 +127,7 @@
                                 end_game();
                             }
                             move_ret = move_snake(move_ret, e.keyCode);
-                        }, 30);
+                        }, 40);
                 } else {
                     clearInterval(clearId);
                     clearId = setInterval(
