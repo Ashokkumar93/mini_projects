@@ -1,0 +1,115 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>King and Queen</title>
+
+    <style>
+        .position {
+            float: left;
+            height: 50px;
+            width: 50px;
+        }
+        
+        .black {
+            background-color: black;
+        }
+        
+        .white {
+            background-color: white;
+        }
+        
+
+        
+        img {
+            width: auto;
+            height: 50px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            margin: 0 auto;
+        }
+        
+        
+        #board {
+            border-color: gray;
+            border-style: solid;
+            border-width: thin;
+            height: 400px;
+            width: 400px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div id="board"></div>
+    <h2 id="result"></h2>
+    <script>
+        createBoard();
+
+        // function to create a Chess Board
+
+        function createBoard() {
+
+            document.getElementById("board").innerHTML = "";
+            var n = 8;
+
+            for (var i = 1; i < (n + 1); i++) {
+
+                for (var j = 1; j < (n + 1); j++) {
+                    var ele = document.createElement("div");
+                    ele.id = i + "" + j;
+
+                    if ((i + j) % 2 == 0) {
+                        ele.className = "position white";
+                    } else {
+                        ele.className = "position black";
+                    }
+
+                    document.getElementById("board").appendChild(ele);
+                }
+            }
+
+            document.getElementById("board").innerHTML += "<br><button id='play' onclick='playGame()'>Play Game</button>"
+        }
+
+        // function to place the king queen randomly, and check if the positions have are in the same line horizontally, vertically and diagonally
+        
+        function playGame() {
+            createBoard();
+            var positions = document.getElementsByClassName("position");
+            
+            var qPos = positions[Math.floor(Math.random() * positions.length)];
+            var kPos = positions[Math.floor(Math.random() * positions.length)];
+
+
+            while (kPos.id == qPos.id) {
+                kPos = positions[Math.floor(Math.random() * positions.length)];
+            }
+            
+            qPos.innerHTML = "<img src='https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Chess_tile_ql.svg/2000px-Chess_tile_ql.svg.png'>";
+            kPos.innerHTML = "<img src='https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Chess_kdt45.svg/2000px-Chess_kdt45.svg.png'>";
+
+            // Getting the digits in the positions of the king and the queen
+            
+            var qId1 = qPos.id%10;
+            var kId1 = kPos.id%10;
+            var qId2 = Math.floor(qPos.id/10);
+            var kId2 = Math.floor(kPos.id/10);
+            var result;
+
+            if ((qId1==kId1) || (qId2==kId2) || ((Math.abs(qId1-kId1))==(Math.abs(qId2-kId2)))) {
+                result="Check!"
+            } else {
+                result = "The king is safe"
+            }
+
+            document.getElementById("result").innerHTML = result;
+
+        }
+    </script>
+</body>
+
+</html>
