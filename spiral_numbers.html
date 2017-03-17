@@ -1,0 +1,95 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Untitled Document</title>
+
+
+</head>
+
+<body>
+    Please enter the number of rows in the square matrix:<br>
+    <input id="size" type="number">
+    <button id="submitSize" onclick="createMatrix()">Create Matrix</button>
+
+
+    <script>
+        
+        /* The logic behind acquiring numbers is that after the removal of the first array of the numbers, we iterate continuously until the matrix is reduced to a size of 1 or 2. Until then, in every iteration we transpose the matrix, flip it vertically and take the first row.*/
+        
+        // function to create a square matrix of the input boxes, from the size mentioned by the user
+        
+        function createMatrix() {
+            var n = parseInt(document.getElementById("size").value);
+            document.getElementById("size").value = "";
+            
+            document.body.innerHTML = "<h1>Enter the values in the Matrix </h1><br>";
+            
+            for (var i = 1; i < (n + 1); i++) {
+
+                for (var j = 1; j < (n + 1); j++) {
+                    var ele = document.createElement("input");
+                    ele.id = i + "" + j;
+                    ele.style.height = "30px";
+                    ele.style.width = "30px";
+                    document.body.appendChild(ele);
+                }
+                document.body.innerHTML += "<br>";
+            }
+
+            document.body.innerHTML += "<br><br><button onclick='displayAnswer()'>Arrange Matrix</button> <br> <p id='answer'>The answer is </p>";
+        }
+
+        // function to diplay the answer from the input matrix
+        
+        function displayAnswer() {
+            var answer = [];
+            var matrix = [];
+            var n = Math.sqrt(document.getElementsByTagName("input").length);
+
+            for (var i = 1; i < (n+1); i++) {
+                var row=[];
+                for (var j = 1; j < (n+1); j++) {
+                    row.push(document.getElementById(i+""+j).value);
+                }
+                matrix.push(row);
+            }
+            
+            answer.push(matrix.splice(0,1));
+            
+            while ((matrix.length>1) && (matrix[0].length>1)) {
+                matrix = transposeAndReverse(matrix);
+                answer.push(matrix.splice(0,1));
+            }
+            
+            if ((matrix.length==1) && (matrix[0].length>0)) {
+                answer.push(matrix[0].reverse());
+            }
+            
+            document.getElementById("answer").innerHTML += answer;
+
+        }
+
+        // Function to transpose and reverse the matrix
+        
+        function transposeAndReverse(matrix) {
+            var transposedMatrix = [];
+            var nrows = matrix.length;
+            var ncolumns = matrix[0].length
+
+            for (var i = 0; i < ncolumns; i++) {
+                var row = [];
+                matrix.map(function (x) {
+                    row.push(x[i]);
+                });
+                transposedMatrix.push(row);
+            }
+
+            return transposedMatrix.reverse();
+
+        }
+    </script>
+</body>
+
+</html>
