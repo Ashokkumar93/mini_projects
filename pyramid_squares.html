@@ -18,6 +18,7 @@ draquuares(20,5): there is a 20px gap on each side, between two adjacent squares
     <title>Pyramid Squares</title>
     <style>
         #container {
+            position: relative;
             height: 500px;
             width: 500px;
         }
@@ -29,24 +30,53 @@ draquuares(20,5): there is a 20px gap on each side, between two adjacent squares
 </head>
 
 <body>
+
+    <form id="uf">
+        <table>
+            <tr>
+                <td>Step Size in px:</td>
+                <td>
+                    <input id="stepSize" type="number">
+                </td>
+            </tr>
+            <tr>
+                <td>Shade of gray (0-15):</td>
+                <td>
+                    <input id="grayShade" type="number" max="15" min="0">
+                </td>
+            </tr>
+        </table>
+        <br>
+        <button type="submit">Generate Pyramid</button>
+
+    </form>
+    <br>
+
     <div id="container"></div>
 
     <script>
-        drawSquares(10, 0);
         
+        document.getElementById("uf").addEventListener("submit", function(event) {
+            event.preventDefault();
+            drawSquares(document.getElementById("stepSize").value, document.getElementById("grayShade").value);    
+            document.getElementById("uf").reset();
+        });
+        
+        
+
         var colors = [];
 
         function drawSquares(stepSize, startingColor) {
             var s = 500;
-            var numberSquares = 1+(s/(2*stepSize));
-            var changeInColor = (255 - (startingColor*17))/(numberSquares - 1);
+            var numberSquares = 1 + (s / (2 * stepSize));
+            var changeInColor = (255 - (startingColor * 17)) / (numberSquares - 1);
 
             for (var i = 1; i < (numberSquares); i++) {
                 var ele = document.createElement("div");
-                var color = Math.round(startingColor*17 + ((i-1)*changeInColor));
-                ele.style.backgroundColor = "rgb("+color+","+color+","+color+")";
+                var color = Math.round(startingColor * 17 + ((i - 1) * changeInColor));
+                ele.style.backgroundColor = "rgb(" + color + "," + color + "," + color + ")";
                 ele.className = "pyramid";
-                ele.id=i;
+                ele.id = i;
                 ele.style.height = s - ((i - 1) * 2 * stepSize) + "px";
                 ele.style.width = s - ((i - 1) * 2 * stepSize) + "px";
                 ele.style.top = (i - 1) * stepSize + "px";
