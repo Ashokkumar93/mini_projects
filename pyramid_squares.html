@@ -1,0 +1,63 @@
+<!-- Draw Squares
+
+Write a function drawSquares using any non-canvas-based web framework of your choice (or raw JS) that draws greyscale squares overlapping in a pyramid fashion. The function takes two arguments: a stepSize and a startingColor. StepSize controls the number of pixels to be visible on each side of a square and starting color is a number (0-15) that determines what color to start drawing from (squares should be drawn all the way
+until white in the center).
+
+Here are some samples to better understand the desired output:
+draquuares(10,0): there is a 10px gap on each side, between two adjacent squares, starting color is 0 i.e. black.
+
+draquuares(20,5): there is a 20px gap on each side, between two adjacent squares, starting color is 5.
+ -->
+
+
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Pyramid Squares</title>
+    <style>
+        #container {
+            height: 500px;
+            width: 500px;
+        }
+        
+        .pyramid {
+            position: absolute;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container"></div>
+
+    <script>
+        drawSquares(10, 0);
+        
+        var colors = [];
+
+        function drawSquares(stepSize, startingColor) {
+            var s = 500;
+            var numberSquares = 1+(s/(2*stepSize));
+            var changeInColor = (255 - (startingColor*17))/(numberSquares - 1);
+
+            for (var i = 1; i < (numberSquares); i++) {
+                var ele = document.createElement("div");
+                var color = Math.round(startingColor*17 + ((i-1)*changeInColor));
+                ele.style.backgroundColor = "rgb("+color+","+color+","+color+")";
+                ele.className = "pyramid";
+                ele.id=i;
+                ele.style.height = s - ((i - 1) * 2 * stepSize) + "px";
+                ele.style.width = s - ((i - 1) * 2 * stepSize) + "px";
+                ele.style.top = (i - 1) * stepSize + "px";
+                ele.style.left = (i - 1) * stepSize + "px";
+                ele.style.zIndex = i + "";
+                document.getElementById("container").appendChild(ele);
+            }
+
+
+        }
+    </script>
+</body>
+
+</html>
