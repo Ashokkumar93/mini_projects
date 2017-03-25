@@ -1,0 +1,93 @@
+<!-- We want to add a "star rating" control into our site. Present a UI component with 5 empty stars. The control should let users pick a star rating from 1-5 stars, with the unfilled stars showing up as a faded image. Bonus; present 10 star pickers, and show the average star rating. -->
+
+<!doctype html>
+<html>
+
+<head>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
+
+    <meta charset="UTF-8">
+    <title>Star Ratings</title>
+    <style>
+        .container {
+            border-color: olivedrab;
+            border-width: thin;
+            border-style: solid;
+            height: 22px;
+            width: 150px;
+            text-align: center;
+            vertical-align: middle;
+            margin-bottom: 10px;
+        }
+        
+        .container * {
+            height: 20px;
+            width: 20px;
+            margin: auto;
+            float: left;
+            filter: grayscale(100%);
+            cursor: pointer;
+        }
+        
+        .container .activated {
+            filter: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    Average Rating: <span id="av"></span>
+    <br>
+
+    <script>
+        $(document).ready(function () {
+
+            for (var i = 1; i < 11; i++) {
+                var ele = document.createElement("div");
+                ele.className = "container";
+                ele.id = i;
+                ele.innerHTML = '<img id="' + i + '1" src="http://www.clipartbest.com/cliparts/ncE/BgK/ncEBgKxRi.png">' + '<img id="' + i + '2" src="http://www.clipartbest.com/cliparts/ncE/BgK/ncEBgKxRi.png">' + '<img id="' + i + '3" src="http://www.clipartbest.com/cliparts/ncE/BgK/ncEBgKxRi.png">' + '<img id="' + i + '4" src="http://www.clipartbest.com/cliparts/ncE/BgK/ncEBgKxRi.png">' + '<img id="' + i + '5" src="http://www.clipartbest.com/cliparts/ncE/BgK/ncEBgKxRi.png">' + '<span class="score">0</span>';
+                document.body.appendChild(ele);
+
+
+            };
+
+            $("div>img").click(function () {
+
+                var id = this.id;
+                var siblingCount = document.getElementById(id).parentNode.childElementCount;
+                var siblingNodes = [];
+
+                for (var i = 0; i < siblingCount; i++) {
+                    siblingNodes[i] = document.getElementById(id).parentNode.childNodes[i];
+                }
+                var index = siblingNodes.indexOf(document.getElementById(id));
+                siblingNodes.map(function (x) {
+                    x.className = "";
+                });
+
+                for (var j = 0; j <= index; j++) {
+                    siblingNodes[j].className = "activated";
+                }
+
+                siblingNodes[5].innerHTML = index + 1;
+
+updateAverage();
+
+            });
+        });
+
+        function updateAverage() {
+            
+
+            var totalNumber = document.getElementsByClassName("activated").length;
+          
+          document.getElementById("av").innerHTML = 0.5* Math.round(totalNumber/5);
+        }
+    </script>
+
+</body>
+
+</html>
