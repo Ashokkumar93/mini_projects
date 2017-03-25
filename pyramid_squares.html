@@ -67,6 +67,9 @@ draquuares(20,5): there is a 20px gap on each side, between two adjacent squares
         var colors = [];
 
         function drawSquares(stepSize, startingColor) {
+            
+            document.getElementById("container").innerHTML = "";
+            
             var s = 500;
             var numberSquares = 1 + (s / (2 * stepSize));
             var changeInColor = (255 - (startingColor * 17)) / (numberSquares - 1);
